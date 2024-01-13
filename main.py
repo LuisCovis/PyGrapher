@@ -3,7 +3,7 @@ import subprocess, json
 from modules.functions import UserDefinedFunction
 from modules.UIHandler import UIManager
 from modules.dataHandler import SavedData
-from modules.ConfigHandler import MainConfig
+from modules.configHandler import MainConfig
 
 
 def getMenus():

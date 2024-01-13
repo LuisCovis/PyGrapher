@@ -3,7 +3,7 @@ import sqlite3
 import json
 import time
 import re
-from ConfigHandler import MainConfig
+from configHandler import MainConfig
 # setup ensures the application will run without problems since the first launch.
 # Upon launch, setup.py:
 #   Updates the UNIX and EXPORT_PATH parameters within config.json

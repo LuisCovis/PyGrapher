@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib import ticker
 
 
-# plotSetup :: List[Float[]], Str, Str -> IO
+# plotSetup :: List[Float[]], Str, Str -> Tuple
 # Takes a list of XY values and outputs the plot and figure objects
 # Aditionally takes text data for the title and axis label
 def setup(
