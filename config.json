@@ -1,0 +1,60 @@
+{
+    "color_palette": {
+        "background": "#151515",
+        "foreground": "#FAFAFA",
+        "plot_line": "#F20000",
+        "text_color": "#FAFAFA"
+    },
+    "global": {
+        "UNIX": true,
+        "EXPORT_PATH": "/media/Documents/projects/Grapher/Graficas/",
+        "DEBUG_MODE": false,
+        "graph_buffer": 5,
+        "XPlotRange": [
+            -5,
+            5
+        ],
+        "YPlotRange": [
+            -4,
+            4
+        ],
+        "XRes": 25,
+        "nmfilter": [
+            "\"",
+            "{",
+            "}",
+            "$",
+            "\\",
+            "\u00e7"
+        ],
+        "function_list": [
+            "sqrt",
+            "asin",
+            "cos",
+            "tan",
+            "asin",
+            "acos"
+        ]
+    },
+    "grid_cfg": {
+        "minor": {
+            "color": "#C2C2C2",
+            "linestyle": "-",
+            "linewidth": 0.1,
+            "which": "minor"
+        },
+        "major": {
+            "color": "#D2D2D2",
+            "linestyle": "-",
+            "linewidth": 0.5,
+            "which": "major"
+        },
+        "axis_line": {
+            "color": "black",
+            "linewidth": 1,
+            "linestyle": "--"
+        },
+        "locator": "ticker.MultipleLocator(.5)",
+        "maj_locator": "ticker.AutoLocator()"
+    }
+}

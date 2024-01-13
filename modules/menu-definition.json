@@ -1,0 +1,103 @@
+{
+  "static": {
+    "0": [
+      "Grapher 0.1",
+      "Una graficadora multiplataforma creada en python. Selecciona una opción de la siguiente lista para comenzar.",
+      {
+        "E": ["Editar expresión","JM2"],
+        "M": ["Mostrar grafica","AC1"],
+        "G": ["Configurar salida o guardar","JM1"],
+        "V": ["Gestionar Vault","JM3"]
+      },
+      {"La función a graficar será {} en el rango {}": ["self.handler.function.raw_expression","self.handler.cfg['XPlotRange']"]}
+    ],
+    "1": [
+      "Configuración de la grafica",
+      "Modifica la grafica a gusto y confirma los cambios para guardar la imagen o bien, guarda la expresión en el vault",
+      {
+        "T": ["Modificar título","JE4"],
+        "X": ["Modificar rango horizontal","JE5"],
+        "Y": ["Modificar rango vertical","JE6"],
+		"R": ["Cambiar sample rate","JE8"],
+        "C": ["Confirmar y guardar","AC2"],
+        "V": ["Guardar en el vault","AC3"]
+      },
+      {"Configuración actual:\nTitulo:              {}\nRango hroizontal:    {}\nRango vertical:      {}\nSamples por unidad:  {}": ["self.handler.function.title","self.handler.cfg['XPlotRange']","self.handler.cfg['YPlotRange']","self.handler.cfg['XRes']"]}
+    ],
+    "2": [
+      "Editar expresión",
+      "Edita la función que se va a graficar",
+      {
+        "E": ["Editar expresión actual","JE7"],
+        "H": ["Seleccionar una expresión del historial","JM10"],
+        "V": ["Seleccionar una expresión del vault","JM9"]
+      },
+      {"Expresion actual: {}":["self.handler.function.raw_expression"]}
+    ],
+    "3": [
+      "Gestión de expresiones",
+      "Elimina funciones del vault o guarda expresiones a partir del historial",
+      {
+        "E": ["Eliminar expresiones del vault","JM11"],
+        "G": ["Guardar una expresión a partir del historial","JM12"]
+      }
+    ]
+  },
+
+  "dynamic": {
+    "4": [
+      "Editar título de la grafica",
+      "El titulo se usará en la imagen y en el nombre del archivo exportado.",
+      "Titulo anterior: {}",
+      "Titulo nuevo",
+      ["self.handler.function.title"]
+    ],
+    "5": [
+      "Editar rango horizontal de la grafica",
+      "Escribe el rango menor y mayor separados por comas.",
+      "Rango actual: {}",
+      "Nuevo rango",
+      ["self.handler.cfg['XPlotRange']"]
+    ],
+    "6": [
+      "Editar rango vertical de la grafica",
+      "Escribe el rango menor y mayor separados por comas.",
+      "Rango actual: {}",
+      "Nuevo rango",
+      ["self.handler.cfg['YPlotRange']"]
+    ],
+    "7": [
+      "Editar expresión actual",
+      "Modifica la expresión a graficar.",
+      "Expresion actual: {}",
+      "Expresion",
+      ["self.handler.function.raw_expression"]
+    ],
+    "8": [
+      "Cambiar el sample rate o resolución de la gráfica",
+      "Modifica el muestreo que se le hace a la función, acción necesaria para funciones de alta frecuencia.",
+      "Resolución actual: {} muestras por unidad.",
+      "Nueva resolución",
+      ["self.handler.cfg['XRes']"]
+    ]
+  },
+
+  "selection": {
+    "9": [
+      "Selecciona una expresión del vault.",
+      "1"
+    ],
+    "10": [
+      "Selecciona una expresion del historial.",
+      "2"
+    ],
+    "11": [
+      "Elimina una expresion del vault",
+      "3"
+    ],
+    "12": [
+      "Guarda una expresion a partir del historial",
+      "4"
+    ]
+  }
+}
