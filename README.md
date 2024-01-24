@@ -4,6 +4,7 @@ La aplicación cuenta con una interfaz híbrida entre CLI y GUI donde la informa
 También se cuenta con una base de datos para hacer más fácil ver y editar funciones introducidas anteriormente.
 
 ## Features
+* Compatibilidad con Windows y Linux
 * Posibilidad de graficar:
   *   Polinomios
   *   Operadores trigonométricos
@@ -20,7 +21,7 @@ También se cuenta con una base de datos para hacer más fácil ver y editar fun
  
 ## TO-DO List
 * Permitir más de un valor absoluto en las funciones
-* Asegurar compatibilidad con Windows
+* ~~Asegurar compatibilidad con Windows~~ DONE
 * Agregar la opción de comparar 2 funciones en un mismo gráfico
 * Agregar la opción de operar 2 funciones
   * Suma
