@@ -6,7 +6,7 @@
         "text_color": "#FAFAFA"
     },
     "global": {
-        "UNIX": true,
+        "UNIX": false,
         "EXPORT_PATH": "/media/Documents/projects/Grapher/Graficas/",
         "DEBUG_MODE": false,
         "graph_buffer": 5,

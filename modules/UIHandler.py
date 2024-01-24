@@ -1,5 +1,5 @@
 import os
-from configHandler import MainConfig
+from modules.configHandler import MainConfig
 try:
     import readline
 except:
@@ -245,7 +245,7 @@ class UIManager:
             finally:
                 readline.set_startup_hook()  # Reset prompt
         else:
-            return input(prompt)
+            return input("~~>  ")
 
     def changeRange(self, rangeConfig):
         try:

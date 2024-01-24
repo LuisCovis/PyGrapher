@@ -1,4 +1,6 @@
-import subprocess, json
+import subprocess, json, os
+# Change directory to the root of the project
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 # Run setup
 subprocess.call(["python", "./modules/setup.py"])
 from modules.functions import UserDefinedFunction
@@ -22,16 +24,10 @@ def populateMenus(handler, menu_obj):
     for uid in menu_obj["selection"]:
         handler.createMenu(int(uid), menu_obj["selection"][uid], selection=True)
 
-def getConfig():
-    cfg_file = open("config.json") # usar PATH absoluto
-    obj = json.load(cfg_file)
-    cfg_file.close()
-    return obj
-
 if __name__ == "__main__":
 
     # Initialization of handlers
-    cfg = MainConfig(getConfig())
+    cfg = MainConfig()
     dh = SavedData()
     user_function = UserDefinedFunction("sen(t)",cfg)
     UI_Handler = UIManager(user_function,cfg,dh)

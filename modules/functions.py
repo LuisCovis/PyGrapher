@@ -137,7 +137,7 @@ class UserDefinedFunction:
                 readline.set_startup_hook()  # Reset prompt
         
         else:
-            return input(prompt)
+            return input("~~>  ")
 
     def set_expression(self,predefined_expression=None):
         if predefined_expression:
