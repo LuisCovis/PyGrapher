@@ -1,6 +1,9 @@
 import re
 import math
-import readline
+try:
+    import readline
+except:
+    pass
 import numpy as np
 import modules.plotter as plot
 
@@ -125,11 +128,16 @@ class UserDefinedFunction:
         return True
     
     def readInput(self,prompt):
-        readline.set_startup_hook(lambda: readline.insert_text(prompt))  # Set initial prompt
-        try:
-            return input()
-        finally:
-            readline.set_startup_hook()  # Reset prompt
+        if self.cfg.cfg["UNIX"]:
+                
+            readline.set_startup_hook(lambda: readline.insert_text(prompt))  # Set initial prompt
+            try:
+                return input()
+            finally:
+                readline.set_startup_hook()  # Reset prompt
+        
+        else:
+            return input(prompt)
 
     def set_expression(self,predefined_expression=None):
         if predefined_expression:

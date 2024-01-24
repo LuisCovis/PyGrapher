@@ -6,8 +6,8 @@ import re
 # and any other modification to that file.
 
 class MainConfig:
-    def __init__(self, cfg):
-        
+    def __init__(self):
+        cfg = self.getConfig()
         self.color =       dict(cfg["color_palette"])
         self.cfg   =       dict(cfg["global"])
         self.minorLn =     dict(cfg["grid_cfg"]["minor"])
@@ -15,6 +15,12 @@ class MainConfig:
         self.axis_line =   dict(cfg["grid_cfg"]["axis_line"])
         self.locator =     cfg["grid_cfg"]["locator"]
         self.maj_locator = cfg["grid_cfg"]["maj_locator"]
+
+    def getConfig(self):
+        cfg_file = open("config.json") # usar PATH absoluto
+        obj = json.load(cfg_file)
+        cfg_file.close()
+        return obj
 
     def reloadConfig(self,cfg_object):
         self.__init__(cfg_object)

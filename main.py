@@ -1,5 +1,6 @@
 import subprocess, json
-
+# Run setup
+subprocess.call(["python", "./modules/setup.py"])
 from modules.functions import UserDefinedFunction
 from modules.UIHandler import UIManager
 from modules.dataHandler import SavedData
@@ -35,8 +36,6 @@ if __name__ == "__main__":
     user_function = UserDefinedFunction("sen(t)",cfg)
     UI_Handler = UIManager(user_function,cfg,dh)
     populateMenus(UI_Handler, getMenus())
-    # Run setup
-    subprocess.call(["python", "./modules/setup.py"])
     # Main loop 
     while True:
         UI_Handler.mainLoop()

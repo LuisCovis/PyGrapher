@@ -1,3 +1,12 @@
+# Checking for external dependencies.
+try:
+    import matplotlib
+    import numpy
+except:
+    print("No se encontraron algunas dependencias importantes, asegúrese de instalar numpy y matplotlib")
+    input()
+    exit()
+
 import os
 import sqlite3
 import json
@@ -10,12 +19,7 @@ from configHandler import MainConfig
 #   Checks if matplotlib and numpy are installed
 #   Checks if the database already exists, if it doesn't, creates the file and the needed tables
 
-def getConfig():
-    cfg_file = open("config.json") # usar PATH absoluto
-    obj = json.load(cfg_file)
-    cfg_file.close()
-    return obj
-cfg_obj = MainConfig(getConfig())
+cfg_obj = MainConfig()
 cfg = cfg_obj.cfg
 
 print("Detectando ambiente de ejecución")
@@ -37,14 +41,6 @@ if cfg["EXPORT_PATH"]=="null":
         print("Creada una carpeta de salida exitosamente")
 else:
     print("Ya existe una carpeta")
-
-try:
-    import matplotlib
-    import numpy
-except:
-    print("No se encontraron algunas dependencias, asegúrese de instalar numpy y matplotlib")
-    input()
-    exit()
 
 print("Verificando base de datos")
 if not os.path.exists("./modules/vault.db"):

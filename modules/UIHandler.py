@@ -1,5 +1,9 @@
 import os
-import readline
+from configHandler import MainConfig
+try:
+    import readline
+except:
+    pass
 import json
 
 # UIHandler: manages both the application flow and the UI.
@@ -232,13 +236,16 @@ class UIManager:
         return 0
 
     def readInput(self, prompt):
-        readline.set_startup_hook(
-            lambda: readline.insert_text(prompt)
-        )  # Set initial prompt
-        try:
-            return input()
-        finally:
-            readline.set_startup_hook()  # Reset prompt
+        if self.unix:
+            readline.set_startup_hook(
+                lambda: readline.insert_text(prompt)
+            )  # Set initial prompt
+            try:
+                return input()
+            finally:
+                readline.set_startup_hook()  # Reset prompt
+        else:
+            return input(prompt)
 
     def changeRange(self, rangeConfig):
         try:
