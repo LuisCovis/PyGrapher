@@ -33,11 +33,11 @@ print("Creando carpeta de salida.")
 if cfg["EXPORT_PATH"]=="null":
     if re.match(r"/data/data/com\.termux/.",os.getcwd()):
         cfg["EXPORT_PATH"] = "/data/data/com.termux/files/home/storage/dcim/Graficas/"
-        os.system(f"mkdir {cfg['EXPORT_PATH']}")
+        os.mkdir(f"{cfg['EXPORT_PATH']}")
         print("Creada una carpeta para termux en DCIM")
     else:
         cfg["EXPORT_PATH"] = os.getcwd()+"/Graficas/" if cfg["UNIX"] else os.getcwd()+"\\Graficas\\"
-        os.system(f"mkdir {cfg['EXPORT_PATH']}")
+        os.mkdir(f"{cfg['EXPORT_PATH']}")
         print("Creada una carpeta de salida exitosamente")
 else:
     print("Ya existe una carpeta")
