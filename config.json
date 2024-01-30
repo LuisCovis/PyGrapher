@@ -6,8 +6,8 @@
         "text_color": "#FAFAFA"
     },
     "global": {
-        "UNIX": false,
-        "EXPORT_PATH": "/media/Documents/projects/Grapher/Graficas/",
+        "UNIX": "null",
+        "EXPORT_PATH": "null",
         "DEBUG_MODE": false,
         "graph_buffer": 5,
         "XPlotRange": [
