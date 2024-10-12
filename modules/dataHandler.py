@@ -9,10 +9,10 @@ class SavedData:
         self.historyLenght = 5
         self.objects_per_page = 5
 
-    def __extractTuple(self,_tuple):
+    def __extractTuple(self,_tuple):    # deprecated?
         return _tuple[0]
     
-    def __getPureList(self,_list):
+    def __getPureList(self,_list):      # deprecated?
         return list(map(self.__extractTuple,_list))
 
     def __keepHistoryLenght(self,history):
@@ -38,23 +38,28 @@ class SavedData:
         return paginated_list
     
     def getHistory(self):
-        res = self.cur.execute("SELECT expr FROM history")
-        return self.__getPureList(res.fetchall())
+        res = self.cur.execute("SELECT * FROM history")
+        return res.fetchall()
     
     def getVault(self):
-        res = self.cur.execute("SELECT expr FROM vault")
-        pureList = self.__getPureList(res.fetchall())
+        res = self.cur.execute("SELECT * FROM vault")
+        pureList = res.fetchall()
         return self.slicePages(pureList)
 
-    def updateHistory(self,entry):
-        SQL = f"INSERT INTO history VALUES ('{entry}')"
+    def updateHistory(self,entry,name):
+        SQL = f"INSERT INTO history VALUES ('{entry}','{name}')"
         self.cur.execute(SQL)
         history = self.getHistory()
         self.__keepHistoryLenght(history)
         self.con.commit()
 
-    def addToVault(self,entry):
-        SQL = f"INSERT INTO vault VALUES ('{entry}')"
+    def addToVault(self,entry,name):
+        SQL = f"INSERT INTO vault VALUES ('{entry}','{name}')"
+        self.cur.execute(SQL)
+        self.con.commit()
+    
+    def addToVaultFromHistory(self,entry):
+        SQL = f"INSERT INTO vault SELECT * FROM history WHERE expr='{entry}'"
         self.cur.execute(SQL)
         self.con.commit()
 
@@ -63,6 +68,11 @@ class SavedData:
         self.cur.execute(SQL)
         self.con.commit()
     
+    def updateColumn(self,table, entry, col, newVal):
+        SQL = f"UPDATE {table} SET {col} = '{newVal}' WHERE expr='{entry}';"
+        self.cur.execute(SQL)
+        self.con.commit()
+
     def printTables(self):
         res = self.cur.execute("SELECT name FROM sqlite_master")
         print (self.__getPureList(res.fetchall()))

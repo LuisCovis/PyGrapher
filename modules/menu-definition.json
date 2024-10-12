@@ -9,7 +9,7 @@
         "G": ["Configurar salida o guardar","JM1"],
         "V": ["Gestionar Vault","JM3"]
       },
-      {"La funcion a graficar sera {} en el rango {}": ["self.handler.function.raw_expression","self.handler.cfg['XPlotRange']"]}
+      {"La funcion a graficar sera {} en el rango {}\ncon el nombre de {}": ["self.handler.function.raw_expression","self.handler.cfg['XPlotRange']","self.handler.function.title"]}
     ],
     "1": [
       "Configuracion de la grafica",

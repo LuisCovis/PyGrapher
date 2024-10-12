@@ -30,6 +30,7 @@ if __name__ == "__main__":
     cfg = MainConfig()
     dh = SavedData()
     user_function = UserDefinedFunction("sen(t)",cfg)
+    user_function.set_title_hardcoded("Ejemplo")
     UI_Handler = UIManager(user_function,cfg,dh)
     populateMenus(UI_Handler, getMenus())
     # Main loop 

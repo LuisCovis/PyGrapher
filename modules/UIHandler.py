@@ -93,9 +93,9 @@ class UIManager:
         def __populateKeys(self):
             self.__update()
             self.keys = {}
-            for i in range(len(self.iterable)):
+            for i, element in enumerate(self.iterable):
                 self.keys.update(
-                    {str(i): [self.iterable[i], f"AS{self.specialAction}:{i}"]}
+                    {str(i): [element, f"AS{self.specialAction}:{i}"]}
                 )
             if self.paginated:
                 self.keys.update({"S": ["Siguiente pagina", "AC9"]})
@@ -124,7 +124,10 @@ class UIManager:
             print(self.handler.lastErr)
             self.__populateKeys()
             for key in self.keys:
-                print(f"[{key}] {self.keys[key][0]}")
+                if key.isnumeric():
+                    print(f"[{key}] ({self.keys[key][0][1]}) {self.keys[key][0][0]}")
+                else:
+                    print(f"[{key}] {self.keys[key][0]}")
             print("")
             return input("Opción:  ")
 
@@ -269,7 +272,7 @@ class UIManager:
         current_menu = self.menus[self.pointer]
         items = current_menu.iterable
         if action_code == "1":  # Select expression from vault
-            if not self.function.set_expression(items[int(selectedID)]):
+            if not self.function.set_expression(items[int(selectedID)][0]):
                 self.Error(
                     "Ocurrió un error al seleccionar la expresión, puede que sea inválida."
                 )
@@ -278,7 +281,7 @@ class UIManager:
             self.__exitAction(False)
             return
         if action_code == "2":  # Select expression from history
-            if not self.function.set_expression(items[int(selectedID)]):
+            if not self.function.set_expression(items[int(selectedID)][0]):
                 self.Error(
                     "Ocurrió un error al seleccionar la expresión, puede que sea inválida."
                 )
@@ -287,11 +290,11 @@ class UIManager:
             self.__exitAction(False)
             return
         if action_code == "3":  # Delete vault expression
-            self.dh.deleteVaultEntry(items[int(selectedID)])
+            self.dh.deleteVaultEntry(items[int(selectedID)][0])
             self.__exitAction()
             return
         if action_code == "4":  # Save history expression to vault
-            self.dh.addToVault(items[int(selectedID)])
+            self.dh.addToVaultFromHistory(items[int(selectedID)])
             self.__exitAction()
             return
 
@@ -308,16 +311,19 @@ class UIManager:
             return
 
         if action_number == 3: # Save to database
-            self.dh.addToVault(self.function.raw_expression)
+            self.dh.addToVault(self.function.raw_expression,self.function.title)
             return
 
         if action_number == 4: # Edit title
             sw = True
             while sw:
                 self.reDraw()
-                sw = not self.function.set_title()
+                title_operation = self.function.set_title()
+                sw = not title_operation[0]
+                newTitle = title_operation[1]
                 if sw:
                     self.Error("Introduce un título válido.")
+            self.dh.updateColumn("history",self.function.raw_expression,"name",newTitle)
             self.__exitAction()
             return
 
@@ -350,7 +356,7 @@ class UIManager:
                     )
                 else:
                     if self.function.raw_expression != lastExpr:
-                        self.dh.updateHistory(self.function.raw_expression)
+                        self.dh.updateHistory(self.function.raw_expression,self.function.title)
             self.__exitAction()
             return
 

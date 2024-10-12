@@ -1,5 +1,6 @@
 import re
 import math
+import uuid
 try:
     import readline
 except:
@@ -21,7 +22,7 @@ class UserDefinedFunction:
         self.raw_expression = self.expression
         self.X_Axis = list()
         self.Y_Axis = list()
-        self.title = "grafica"
+        self.title = f"Grafica {hex(uuid.uuid1().time_low)[2:]}"
         self.__findAbsoluteValues()
         self.__processSignals()
         self.__processFunctions()
@@ -125,7 +126,11 @@ class UserDefinedFunction:
         if new_title == "":
             return False
         self.title = re.sub(self.REGEX_SANITIZING_FILTER, "", new_title)
-        return True
+        return (True,new_title)
+
+    def set_title_hardcoded(self,title):
+        self.title = title
+        return (True,title)
     
     def readInput(self,prompt):
         if self.cfg.cfg["UNIX"]:

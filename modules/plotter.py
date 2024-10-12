@@ -3,7 +3,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import ticker
 
-
 # plotSetup :: List[Float[]], Str, Str -> Tuple
 # Takes a list of XY values and outputs the plot and figure objects
 # Aditionally takes text data for the title and axis label
@@ -19,12 +18,14 @@ def setup(
     fig, ax = plt.subplots()
     ax.set_xlim(*_xlim)
     ax.set_ylim(*_ylim)
-    
 
     ## Main colors
     fig.set_facecolor(cfg.color["background"])
     ax.set_facecolor(cfg.color["foreground"])
-    ax.plot(*data, color=cfg.color["plot_line"])
+
+    ## Manage multiple plots
+    for graphID, graph in enumerate(data[:-1]):
+        ax.plot(graph, data[-1], color=cfg.color["plot_line"][graphID])
 
     ## Grid, axes and locators
     ax.grid(**cfg.minorLn)
