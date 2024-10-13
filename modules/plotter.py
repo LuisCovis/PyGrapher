@@ -10,7 +10,8 @@ def setup(
     data,
     title,
     y_title,
-    cfg
+    cfg,
+    labels=None
 ):
     _xlim = cfg.cfg["XPlotRange"]
     _ylim = cfg.cfg["YPlotRange"]
@@ -24,8 +25,14 @@ def setup(
     ax.set_facecolor(cfg.color["foreground"])
 
     ## Manage multiple plots
-    for graphID, graph in enumerate(data[:-1]):
-        ax.plot(graph, data[-1], color=cfg.color["plot_line"][graphID])
+    if len(data[:-1]) < 3:
+        for graphID, graph in enumerate(data[:-1]):
+            ax.plot(data[-1], graph, color=cfg.color["plot_line"][graphID])
+    else:
+        for graphID, graph in enumerate(data[1:-1]):
+            ax.plot(data[-1], graph, linestyle='dashed', linewidth=0.5, color=cfg.color["plot_line"][graphID+1])
+        ax.plot(data[-1], data[0], color=cfg.color["plot_line"][0])
+        ax.legend([labels[0],labels[1],"Resultado"])
 
     ## Grid, axes and locators
     ax.grid(**cfg.minorLn)

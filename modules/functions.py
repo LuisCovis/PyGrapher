@@ -113,7 +113,7 @@ class UserDefinedFunction:
                 self.Y_Axis.append(self.Y_Axis[-1])
             c += 1
 
-        return np.array([self.X_Axis, self.Y_Axis])
+        return np.array([self.Y_Axis, self.X_Axis])
 
     def show(self):
         plot.show(plot.setup(self.getValues(),self.title,"y",self.cfg)[0])

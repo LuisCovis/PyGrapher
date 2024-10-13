@@ -278,6 +278,7 @@ class UIManager:
                 )
             else:
                 self.lastErr = ""
+            self.function.set_title_hardcoded(items[int(selectedID)][1])
             self.__exitAction(False)
             return
         if action_code == "2":  # Select expression from history
@@ -287,6 +288,7 @@ class UIManager:
                 )
             else:
                 self.lastErr = ""
+            self.function.set_title_hardcoded(items[int(selectedID)][1])
             self.__exitAction(False)
             return
         if action_code == "3":  # Delete vault expression
