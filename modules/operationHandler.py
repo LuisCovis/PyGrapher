@@ -1,3 +1,4 @@
+import re
 import uuid
 import modules.plotter as plot
 from modules.functions import UserDefinedFunction
@@ -11,6 +12,8 @@ except:
 
 class CompoundFunction:
     def __init__(self, cfg, *functions: UserDefinedFunction):
+        self.operationMap = {"&":0,"+":1,"-":2,"×":3,"*":4}
+        self.REGEX_SANITIZING_FILTER = "|\\".join(cfg.cfg["nmfilter"])
         self.type = "COMPOUND"
         self.cfg = cfg
         self.functions = functions
@@ -80,7 +83,7 @@ class CompoundFunction:
     def getValues(self):
         self.__getIndividualValues()
         if self.operand != "&":
-            return np.array([self.result_Y_Axis, self.X_Axis])
+            self.executeOperation(self.operationMap[self.operand])
         return (*self.Y_Axis,self.X_Axis)
 
     def show(self):

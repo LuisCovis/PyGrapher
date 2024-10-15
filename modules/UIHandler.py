@@ -2,6 +2,7 @@ import os
 from modules.configHandler import MainConfig
 from modules.operationHandler import CompoundFunction
 from modules.functions import UserDefinedFunction
+
 try:
     import readline
 except:
@@ -96,9 +97,7 @@ class UIManager:
             self.__update()
             self.keys = {}
             for i, element in enumerate(self.iterable):
-                self.keys.update(
-                    {str(i): [element, f"AS{self.specialAction}:{i}"]}
-                )
+                self.keys.update({str(i): [element, f"AS{self.specialAction}:{i}"]})
             if self.paginated:
                 self.keys.update({"S": ["Siguiente pagina", "AC9"]})
                 self.keys.update({"A": ["Pagina Anterior", "AC10"]})
@@ -133,7 +132,7 @@ class UIManager:
             print("")
             return input("Opción:  ")
 
-    def __init__(self, user_function,cfg,dh):
+    def __init__(self, user_function, cfg, dh):
         self.cfg = cfg.cfg
         self.cfg_obj = cfg
         self.debug = self.cfg["DEBUG_MODE"]
@@ -197,13 +196,13 @@ class UIManager:
 
     def createMenu(self, UID, dataList, dynamic=False, selection=False):
         if dynamic:
-            newUI = UIManager.EditScreen(self,*dataList)
+            newUI = UIManager.EditScreen(self, *dataList)
 
         elif selection:
-            newUI = UIManager.SelectionMenu(self,*dataList)
+            newUI = UIManager.SelectionMenu(self, *dataList)
 
         else:
-            newUI = UIManager.MenuObject(self,*dataList)
+            newUI = UIManager.MenuObject(self, *dataList)
             if UID == 0:
                 newUI.keys["Q"] = ["\033[31mSalir\033[39m", "EXT"]
         self.menus[UID] = newUI
@@ -213,7 +212,7 @@ class UIManager:
 
     def checkIfCompound(self):
         if self.function.type == "COMPOUND":
-            self.function = UserDefinedFunction("t",self.cfg_obj)
+            self.function = UserDefinedFunction("t", self.cfg_obj)
             self.function.set_title_hardcoded("Expresion generada automaticamente")
 
     # The navigation is based on codes, each action or valid key returns a code:
@@ -311,28 +310,34 @@ class UIManager:
             return
 
         if action_code == "5":  # Create a compound function
-            self.function = CompoundFunction(self.cfg_obj,self.function,UserDefinedFunction(items[int(selectedID)][0],self.cfg_obj))
+            new_function = UserDefinedFunction(items[int(selectedID)][0], self.cfg_obj)
+            new_function.set_title_hardcoded(items[int(selectedID)][1])
+            self.function = CompoundFunction(
+                self.cfg_obj,
+                self.function,
+                new_function,
+            )
             self.__exitAction()
             self.__exitAction()
             return
 
     def action(self, action_number):
-        if action_number == 1: # Plot Show
+        if action_number == 1:  # Plot Show
             self.function.show()
             return
 
-        if action_number == 2: # Confirm and save
+        if action_number == 2:  # Confirm and save
             self.function.save()
             self.success(
                 f"Gráfica guardada en {self.cfg['EXPORT_PATH']} satisfactoriamente."
             )
             return
 
-        if action_number == 3: # Save to database
-            self.dh.addToVault(self.function.raw_expression,self.function.title)
+        if action_number == 3:  # Save to database
+            self.dh.addToVault(self.function.raw_expression, self.function.title)
             return
 
-        if action_number == 4: # Edit title
+        if action_number == 4:  # Edit title
             sw = True
             while sw:
                 self.reDraw()
@@ -341,11 +346,13 @@ class UIManager:
                 newTitle = title_operation[1]
                 if sw:
                     self.Error("Introduce un título válido.")
-            self.dh.updateColumn("history",self.function.raw_expression,"name",newTitle)
+            self.dh.updateColumn(
+                "history", self.function.raw_expression, "name", newTitle
+            )
             self.__exitAction()
             return
 
-        if action_number == 5: # XRange config
+        if action_number == 5:  # XRange config
             isChanged = False
             while not isChanged:
                 self.reDraw()
@@ -354,7 +361,7 @@ class UIManager:
             self.__exitAction()
             return
 
-        if action_number == 6: # YRange config
+        if action_number == 6:  # YRange config
             isChanged = False
             while not isChanged:
                 self.reDraw()
@@ -362,7 +369,7 @@ class UIManager:
             self.__exitAction()
             return
 
-        if action_number == 7: # Edit function
+        if action_number == 7:  # Edit function
             self.checkIfCompound()
             lastExpr = self.function.raw_expression
             isNotChanged = True
@@ -375,11 +382,13 @@ class UIManager:
                     )
                 else:
                     if self.function.raw_expression != lastExpr:
-                        self.dh.updateHistory(self.function.raw_expression,self.function.title)
+                        self.dh.updateHistory(
+                            self.function.raw_expression, self.function.title
+                        )
             self.__exitAction()
             return
 
-        if action_number == 8: # Edit sample rate
+        if action_number == 8:  # Edit sample rate
             sw = True
             old_XRes = self.cfg["XRes"]
             while sw:
@@ -398,58 +407,87 @@ class UIManager:
             self.__exitAction()
             return
 
-        if action_number == 9: # Next page of the SelectionMenu
+        if action_number == 9:  # Next page of the SelectionMenu
             current_menu = self.menus[self.pointer]
-            current_menu.nextPage(self)
+            current_menu.nextPage()
             return
 
-        if action_number == 10: # Previous page of the SelectionMenu
+        if action_number == 10:  # Previous page of the SelectionMenu
             current_menu = self.menus[self.pointer]
-            current_menu.prevPage(self)
-            return
-        
-        if action_number == 11: # Add two functions, CompoundFunction required
-            try:
-                self.function.executeOperation(1)
-                self.__exitAction()
-            except:
-                self.__exitAction()
-                self.Error("La funcion actual no es compuesta, elige otra funcion para operar")
-            return
-        
-        if action_number == 12: # Substract two functions, CompoundFunction required
-            try:
-                self.function.executeOperation(2)
-                self.__exitAction()
-            except:
-                self.__exitAction()
-                self.Error("La funcion actual no es compuesta, elige otra funcion para operar")
+            current_menu.prevPage()
             return
 
-        if action_number == 13: # Multiply two functions, CompoundFunction required
+        if action_number == 11:  # Add two functions, CompoundFunction required
             try:
-                self.function.executeOperation(3)
+                if self.function.operand == "&":
+                    self.function.executeOperation(1)
+                else:
+                    self.function.executeOperation(0)
+                    self.function.executeOperation(1)
                 self.__exitAction()
             except:
                 self.__exitAction()
-                self.Error("La funcion actual no es compuesta, elige otra funcion para operar")
+                self.Error(
+                    "La funcion actual no es compuesta, elige otra funcion para operar"
+                )
             return
 
-        if action_number == 14: # Convolute two functions, CompoundFunction required
+        if action_number == 12:  # Substract two functions, CompoundFunction required
             try:
-                self.function.executeOperation(4)
+                if self.function.operand == "&":
+                    self.function.executeOperation(2)
+                else:
+                    self.function.executeOperation(0)
+                    self.function.executeOperation(2)
                 self.__exitAction()
             except:
-                self.Error("La funcion actual no es compuesta, elige otra funcion para operar")
+                self.__exitAction()
+                self.Error(
+                    "La funcion actual no es compuesta, elige otra funcion para operar"
+                )
             return
-        
-        if action_number == 15: # Remove operations, CompoundFunction required
+
+        if action_number == 13:  # Multiply two functions, CompoundFunction required
             try:
+                if self.function.operand == "&":
+                    self.function.executeOperation(3)
+                else:
+                    self.function.executeOperation(0)
+                    self.function.executeOperation(3)
+                self.__exitAction()
+            except:
+                self.__exitAction()
+                self.Error(
+                    "La funcion actual no es compuesta, elige otra funcion para operar"
+                )
+            return
+
+        if action_number == 14:  # Convolute two functions, CompoundFunction required
+            try:
+                if self.function.operand == "&":
+                    self.function.executeOperation(4)
+                else:
+                    self.function.executeOperation(0)
+                    self.function.executeOperation(4)
+                self.__exitAction()
+            except:
+                self.Error(
+                    "La funcion actual no es compuesta, elige otra funcion para operar"
+                )
+            return
+
+        if action_number == 15:  # Remove operations, CompoundFunction required
+            try:
+                if self.function.operand == "&":
+                    self.__exitAction()
+                    return
                 self.function.executeOperation(0)
                 self.__exitAction()
             except:
                 self.__exitAction()
-                self.Error("La funcion actual no es compuesta, no hay operacion que eliminar")
+                self.Error(
+                    "La funcion actual no es compuesta, no hay operacion que eliminar"
+                )
             return
 
         # Default option
@@ -479,4 +517,3 @@ class UIManager:
             self.Error("Por favor, selecciona una opción de la lista.")
         else:
             self.current_action = self.decode(current_menu.keys[value.upper()][1])
-

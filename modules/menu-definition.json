@@ -1,7 +1,7 @@
 {
   "static": {
     "0": [
-      "Grapher 1.0",
+      "Grapher 2.0",
       "Una graficadora multiplataforma creada en python. Selecciona una opcion de la siguiente lista para comenzar.",
       {
         "E": ["Editar expresion","JM2"],
