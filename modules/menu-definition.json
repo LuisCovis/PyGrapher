@@ -7,7 +7,8 @@
         "E": ["Editar expresion","JM2"],
         "M": ["Mostrar grafica","AC1"],
         "G": ["Configurar salida o guardar","JM1"],
-        "V": ["Gestionar Vault","JM3"]
+        "V": ["Gestionar Vault","JM3"],
+        "X": ["Realizar operaciones","JM15"]
       },
       {"La funcion a graficar sera {} en el rango {}\ncon el nombre de {}": ["self.handler.function.raw_expression","self.handler.cfg['XPlotRange']","self.handler.function.title"]}
     ],
@@ -18,7 +19,7 @@
         "T": ["Modificar titulo","JE4"],
         "X": ["Modificar rango horizontal","JE5"],
         "Y": ["Modificar rango vertical","JE6"],
-		"R": ["Cambiar sample rate","JE8"],
+		  "R": ["Cambiar sample rate","JE8"],
         "C": ["Confirmar y guardar","AC2"],
         "V": ["Guardar en el vault","AC3"]
       },
@@ -28,7 +29,7 @@
       "Editar expresion",
       "Edita la funcion que se va a graficar",
       {
-        "E": ["Editar expresion actual","JE7"],
+        "E": ["Editar expresion actual","JM13"],
         "H": ["Seleccionar una expresion del historial","JM10"],
         "V": ["Seleccionar una expresion del vault","JM9"]
       },
@@ -40,6 +41,27 @@
       {
         "E": ["Eliminar expresiones del vault","JM11"],
         "G": ["Guardar una expresion a partir del historial","JM12"]
+      }
+    ],
+    "13": [
+      "Tipo de expresion nueva",
+      "Selecciona el tipo de expresion que desea introducir",
+      {
+        "S": ["Expresion simple","JE7"],
+        "C": ["Expresion compuesta (Vault)","JM14"],
+        "P": ["Expresion definida por partes (WIP)","WIP"],
+        "D": ["Definir una señal discreta a partir de puntos (WIP)", "WIP"]
+      }
+    ],
+    "15": [
+      "Operacion de funciones",
+      "Selecciona de la lista la operacion deseada para la funcion compuesta",
+      {
+        "S": ["Suma","AC11"],
+        "R": ["Resta","AC12"],
+        "M": ["Multiplicacion","AC13"],
+        "C": ["Convolucion","AC14"],
+        "X": ["Remover operaciones","AC15"]
       }
     ]
   },
@@ -98,6 +120,10 @@
     "12": [
       "Guarda una expresion a partir del historial",
       "4"
+    ],
+    "14": [
+      "Selecciona con cual expresion combinar la actual",
+      "5"
     ]
   }
 }

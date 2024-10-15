@@ -21,13 +21,15 @@ También se cuenta con una base de datos para hacer más fácil ver y editar fun
  
 ## TO-DO List
 * Permitir más de un valor absoluto en las funciones
-* ~~Asegurar compatibilidad con Windows~~ DONE
-* Agregar la opción de comparar 2 funciones en un mismo gráfico
-* Agregar la opción de operar 2 funciones
-  * Suma
-  * Resta
-  * Multiplicación
-  * Convolución
+* Definir funciones por partes
+* Definir señales discretas
+* ~~Asegurar compatibilidad con Windows~~ 
+* ~~Agregar la opción de comparar 2 funciones en un mismo gráfico~~
+* ~~Agregar la opción de operar 2 funciones~~
+  * ~~Suma~~
+  * ~~Resta~~
+  * ~~Multiplicación~~
+  * ~~Convolución~~
 
 # Documentación
 El proyecto está dividido en distintos módulos, cada uno con su función específica

@@ -1,5 +1,7 @@
 import os
 from modules.configHandler import MainConfig
+from modules.operationHandler import CompoundFunction
+from modules.functions import UserDefinedFunction
 try:
     import readline
 except:
@@ -133,6 +135,7 @@ class UIManager:
 
     def __init__(self, user_function,cfg,dh):
         self.cfg = cfg.cfg
+        self.cfg_obj = cfg
         self.debug = self.cfg["DEBUG_MODE"]
         self.unix = self.cfg["UNIX"]
         self.dh = dh
@@ -208,6 +211,11 @@ class UIManager:
     def selectMenu(self, ptr):
         self.stack.append(ptr)
 
+    def checkIfCompound(self):
+        if self.function.type == "COMPOUND":
+            self.function = UserDefinedFunction("t",self.cfg_obj)
+            self.function.set_title_hardcoded("Expresion generada automaticamente")
+
     # The navigation is based on codes, each action or valid key returns a code:
     #   EXT: Exit code, closes database and exits the program
     #   BCK: Back code, pops a pointer from the stack, so the cursor will be set to the previous ID
@@ -272,6 +280,7 @@ class UIManager:
         current_menu = self.menus[self.pointer]
         items = current_menu.iterable
         if action_code == "1":  # Select expression from vault
+            self.checkIfCompound()
             if not self.function.set_expression(items[int(selectedID)][0]):
                 self.Error(
                     "Ocurrió un error al seleccionar la expresión, puede que sea inválida."
@@ -282,6 +291,7 @@ class UIManager:
             self.__exitAction(False)
             return
         if action_code == "2":  # Select expression from history
+            self.checkIfCompound()
             if not self.function.set_expression(items[int(selectedID)][0]):
                 self.Error(
                     "Ocurrió un error al seleccionar la expresión, puede que sea inválida."
@@ -297,6 +307,12 @@ class UIManager:
             return
         if action_code == "4":  # Save history expression to vault
             self.dh.addToVaultFromHistory(items[int(selectedID)])
+            self.__exitAction()
+            return
+
+        if action_code == "5":  # Create a compound function
+            self.function = CompoundFunction(self.cfg_obj,self.function,UserDefinedFunction(items[int(selectedID)][0],self.cfg_obj))
+            self.__exitAction()
             self.__exitAction()
             return
 
@@ -347,6 +363,7 @@ class UIManager:
             return
 
         if action_number == 7: # Edit function
+            self.checkIfCompound()
             lastExpr = self.function.raw_expression
             isNotChanged = True
             while isNotChanged:
@@ -389,6 +406,50 @@ class UIManager:
         if action_number == 10: # Previous page of the SelectionMenu
             current_menu = self.menus[self.pointer]
             current_menu.prevPage(self)
+            return
+        
+        if action_number == 11: # Add two functions, CompoundFunction required
+            try:
+                self.function.executeOperation(1)
+                self.__exitAction()
+            except:
+                self.__exitAction()
+                self.Error("La funcion actual no es compuesta, elige otra funcion para operar")
+            return
+        
+        if action_number == 12: # Substract two functions, CompoundFunction required
+            try:
+                self.function.executeOperation(2)
+                self.__exitAction()
+            except:
+                self.__exitAction()
+                self.Error("La funcion actual no es compuesta, elige otra funcion para operar")
+            return
+
+        if action_number == 13: # Multiply two functions, CompoundFunction required
+            try:
+                self.function.executeOperation(3)
+                self.__exitAction()
+            except:
+                self.__exitAction()
+                self.Error("La funcion actual no es compuesta, elige otra funcion para operar")
+            return
+
+        if action_number == 14: # Convolute two functions, CompoundFunction required
+            try:
+                self.function.executeOperation(4)
+                self.__exitAction()
+            except:
+                self.Error("La funcion actual no es compuesta, elige otra funcion para operar")
+            return
+        
+        if action_number == 15: # Remove operations, CompoundFunction required
+            try:
+                self.function.executeOperation(0)
+                self.__exitAction()
+            except:
+                self.__exitAction()
+                self.Error("La funcion actual no es compuesta, no hay operacion que eliminar")
             return
 
         # Default option

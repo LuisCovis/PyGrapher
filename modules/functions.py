@@ -15,6 +15,7 @@ import modules.plotter as plot
 
 class UserDefinedFunction:
     def __init__(self, expression,cfg):
+        self.type = "SINGLE"
         self.REGEX_SANITIZING_FILTER = "|\\".join(cfg.cfg["nmfilter"])
         self.REGEX_FUNCTIONS = "|".join(cfg.cfg["function_list"])
         self.cfg = cfg

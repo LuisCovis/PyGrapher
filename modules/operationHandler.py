@@ -11,6 +11,7 @@ except:
 
 class CompoundFunction:
     def __init__(self, cfg, *functions: UserDefinedFunction):
+        self.type = "COMPOUND"
         self.cfg = cfg
         self.functions = functions
         self.X_Axis = list()
@@ -19,6 +20,11 @@ class CompoundFunction:
         self.expr = str()
         self.operand = "&"
         self.updateExpr()
+        self.__getIndividualValues()
+
+    def __getIndividualValues(self):
+        self.X_Axis = []
+        self.Y_Axis = []
         for function in self.functions:
             values = function.getValues()
             self.Y_Axis.append(*values[:-1])
@@ -54,7 +60,7 @@ class CompoundFunction:
         else:              # Convolute, "same" convolution between both functions
             self.operand = "*"
             self.result_Y_Axis = []
-            self.result_Y_Axis = np.convolve(self.Y_Axis[0], self.Y_Axis[1], mode="same") / cfg.cfg["XRes"]
+            self.result_Y_Axis = np.convolve(self.Y_Axis[0], self.Y_Axis[1], mode="same") / self.cfg.cfg["XRes"]
             self.Y_Axis.insert(0,self.result_Y_Axis)
 
         self.updateExpr()
@@ -69,14 +75,16 @@ class CompoundFunction:
                 title_list.append(func.title)
         self.expr = f" {self.operand} ".join(title_list)
         self.title = self.expr
+        self.raw_expression = self.expr
 
     def getValues(self):
+        self.__getIndividualValues()
         if self.operand != "&":
             return np.array([self.result_Y_Axis, self.X_Axis])
         return (*self.Y_Axis,self.X_Axis)
 
     def show(self):
-        plot.show(plot.setup((*self.Y_Axis,self.X_Axis),self.title,"y",self.cfg,labels=[self.functions[0].title,self.functions[1].title])[0])
+        plot.show(plot.setup((*self.Y_Axis,self.X_Axis),self.title,"y",self.cfg,labels=[self.functions[0].raw_expression,self.functions[1].raw_expression])[0])
 
     def readInput(self,prompt):
         if self.cfg.cfg["UNIX"]:

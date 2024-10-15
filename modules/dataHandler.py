@@ -17,7 +17,7 @@ class SavedData:
 
     def __keepHistoryLenght(self,history):
         if len(history) > self.historyLenght:
-            SQL = f"DELETE FROM history WHERE expr='{history[0]}'"
+            SQL = f"DELETE FROM history WHERE expr='{history[0][0]}'"
             self.cur.execute(SQL)
             self.con.commit()
 
