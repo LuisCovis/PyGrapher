@@ -101,6 +101,9 @@ class CompoundFunction:
         else:
             return input("~~>  ")
 
+    def save(self):
+        plot.save(*plot.setup((*self.Y_Axis,self.X_Axis),self.title,"y",self.cfg,labels=[self.functions[0].raw_expression,self.functions[1].raw_expression]),self.title,self.cfg)
+
     def set_title(self):
         new_title = self.readInput(self.title)
         if new_title == "":
