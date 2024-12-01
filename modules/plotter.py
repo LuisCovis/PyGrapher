@@ -24,14 +24,22 @@ def setup(
     fig.set_facecolor(cfg.color["background"])
     ax.set_facecolor(cfg.color["foreground"])
 
+    ## Discrete functions
+    is_discrete = True if cfg.cfg["XRes"] == 1 else False
+    def quantizeTime(x,y,colorID=0):
+        if is_discrete:
+            ax.stem(x,y, linefmt=cfg.color["plot_line"][colorID])
+
     ## Manage multiple plots
     if len(data[:-1]) < 3:
         for graphID, graph in enumerate(data[:-1]):
-            ax.plot(data[-1], graph, color=cfg.color["plot_line"][graphID])
+            ax.plot(data[-1], graph, linestyle='solid'*(not is_discrete), color=cfg.color["plot_line"][graphID])
+            quantizeTime(data[-1],graph,colorID=graphID)
     else:
         for graphID, graph in enumerate(data[1:-1]):
             ax.plot(data[-1], graph, linestyle='dashed', linewidth=0.5, color=cfg.color["plot_line"][graphID+1])
-        ax.plot(data[-1], data[0], color=cfg.color["plot_line"][0])
+        ax.plot(data[-1], data[0], linestyle='solid'*(not is_discrete),color=cfg.color["plot_line"][0])
+        quantizeTime(data[-1],data[0])
         ax.legend([labels[0],labels[1],"Resultado"])
 
     ## Grid, axes and locators
