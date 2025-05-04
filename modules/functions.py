@@ -36,6 +36,14 @@ class UserDefinedFunction:
         )
         self.expression = re.sub("\|", "", self.expression)
         return
+    
+    def __auxFindAbsoluteValues(self,expr):
+        PATTERN = "(?<=\|).*?(?=\|)"
+        expr = re.sub(
+            PATTERN, lambda match: f"abs({match[0]})", expr
+        )
+        expr = re.sub("\|", "", expr)
+        return expr
 
     def __processFunctions(self):
         self.expression = re.sub(  # Catches sqrt, sin, cos, tan, asin, acos, atan and log
@@ -45,18 +53,40 @@ class UserDefinedFunction:
             "sen", "math.sin", self.expression
         )
         return
+    
+    def __auxProcessFunctions(self,expr):
+        expr = re.sub(  # Catches sqrt, sin, cos, tan, asin, acos, atan and log
+            self.REGEX_FUNCTIONS, lambda match: f"math.{match[0]}", expr
+        )
+        expr = re.sub(  # Only catches sen and converts it to the valid function sin
+            "sen", "math.sin", expr
+        )
+        return expr
 
     def __processConstants(self):
         self.expression = re.sub("e", str(math.e), self.expression)
         self.expression = re.sub("pi", str(math.pi), self.expression)
         self.expression = re.sub("\^", "**", self.expression)
         return
+    
+    def __auxProcessConstants(self,expr):
+        expr = re.sub("e", str(math.e), expr)
+        expr = re.sub("pi", str(math.pi), expr)
+        expr = re.sub("\^", "**", expr)
+        return expr
 
     def __processSignals(self):
         EXPRESSION = "((?<=u\()|(?<=p\()|(?<=d\()).*?(?=\))"
         self.expression = re.sub(
             EXPRESSION, lambda match: f"'{match[0]}',i", self.expression
         )
+
+    def __auxProcessSignals(self,expr):
+        EXPRESSION = "((?<=u\()|(?<=p\()|(?<=d\()).*?(?=\))"
+        expr = re.sub(
+            EXPRESSION, lambda match: f"'{match[0]}',i", expr
+        )
+        return expr
 
     # Unitary step function
     def __unitStep(self,step_expression: int, index: int) -> int:  # Step function
@@ -89,11 +119,21 @@ class UserDefinedFunction:
 
     def getValues(self):
         ###cfg.updateRange()
-        self.X_Axis = [
-            i / self.cfg.cfg["XRes"]
-            for i in range(self.cfg.cfg["XRes"] * self.cfg.cfg["XPlotRange"][0], self.cfg.cfg["XRes"] * self.cfg.cfg["XPlotRange"][1] + 1)
-
-        ]
+        if self.cfg.cfg['XResScale'] == 1:
+            self.X_Axis = [
+                i / self.cfg.cfg["XRes"]
+                for i in range(self.cfg.cfg["XRes"] * self.cfg.cfg["XPlotRange"][0], 
+                            self.cfg.cfg["XRes"] * self.cfg.cfg["XPlotRange"][1] + 1, 
+                            )
+                ]
+        else:
+            self.X_Axis = [
+                i * self.cfg.cfg["XResScale"]
+                for i in range(
+                    int(self.cfg.cfg["XRes"] * self.cfg.cfg["XPlotRange"][0]),
+                    int(self.cfg.cfg["XRes"] * self.cfg.cfg["XPlotRange"][1] + 1),
+                )
+            ]
         self.Y_Axis = []
         c = 0
         for t in self.X_Axis:
@@ -102,10 +142,18 @@ class UserDefinedFunction:
                 {},
                 {"i": c, "t": t, "math": math, "p": self.__pulse, "u": self.__unitStep, "d": self.__dirac, "np": np},
             )
+            ind_senOver_t = re.compile(r's[ei]n\s*\(\s*t\s*\*\s*([^()]+?)\s*\)\s*\/\s*t')
             try:
                 self.Y_Axis.append(eval(*evaluation))
             except ZeroDivisionError:
-                self.Y_Axis.append(2**15)
+                if ind_senOver_t.search(self.raw_expression): # Searches for any sen(x)/x expression
+                    temp_expr = self.__auxProcessFunctions(ind_senOver_t.sub(r'\1',self.raw_expression))
+                    temp_expr = self.__auxProcessConstants(temp_expr)
+                    temp_expr = self.__auxProcessSignals(temp_expr)
+                    temp_expr = self.__auxFindAbsoluteValues(temp_expr)
+                    self.Y_Axis.append(eval(temp_expr, {}, {"i": c, "t": t, "math": math, "p": self.__pulse, "u": self.__unitStep, "d": self.__dirac, "np": np}))
+                else:
+                    self.Y_Axis.append(2**15)
 
             except ValueError:
                 self.Y_Axis.append(0)

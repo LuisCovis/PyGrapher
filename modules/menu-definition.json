@@ -19,7 +19,8 @@
         "T": ["Modificar titulo","JE4"],
         "X": ["Modificar rango horizontal","JE5"],
         "Y": ["Modificar rango vertical","JE6"],
-		  "R": ["Cambiar sample rate","JE8"],
+		    "R": ["Cambiar multiplicador de muestreo","JE8"],
+        "W": ["Cambiar frecuencia de muestreo","JE15"],
         "C": ["Confirmar y guardar","AC2"],
         "V": ["Guardar en el vault","AC3"]
       },
@@ -101,6 +102,13 @@
       "Resolucion actual: {} muestras por unidad.",
       "Nueva resolucion",
       ["self.handler.cfg['XRes']"]
+    ],
+    "15": [
+      "Cambia la frecuencia de muestreo de la gráfica",
+      "Modifica la frecuencia de muestreo, visible solo cuando XRes es 1.",
+      "Frecuencia actual: {}",
+      "Nueva frecuencia",
+      ["self.handler.cfg['XResScale']"]
     ]
   },
 

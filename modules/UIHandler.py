@@ -406,6 +406,29 @@ class UIManager:
                     )
             self.__exitAction()
             return
+        
+        if action_number == 15: # Edit sampling frequency, Wn
+            sw = True
+            old_Wn = self.cfg["XResScale"]
+            while sw:
+                self.reDraw()
+                try:
+                    new_Wn = self.readInput(old_Wn)
+                    if new_Wn == "":
+                        sw = False
+                    else:
+                        self.cfg["XResScale"] = float(new_Wn)
+                        sw = False
+                        self.cfg["XPlotRange"] = [
+                            float(self.cfg["XPlotRange"][0])/float(new_Wn),
+                            float(self.cfg["XPlotRange"][1])/float(new_Wn)
+                            ]
+                except Exception as e:
+                    self.Error(
+                        f"Hubo un error asignando la nueva frecuencia de muestreo. Intenta de nuevo o deja vacío para salir sin guardar  {e}"
+                    )
+            self.__exitAction()
+            return
 
         if action_number == 9:  # Next page of the SelectionMenu
             current_menu = self.menus[self.pointer]
